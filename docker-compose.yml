@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  db:
+    container_name: mysqldb
+    image: mysql:latest
+    restart: always
+    env_file:
+      - ./env/mysql.env
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./scripts/setup_schema.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./scripts/init_data.sql:/docker-entrypoint-initdb.d/2.sql
+      - ./queries:/queries
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+# Names our volume
+volumes:
+  dbdata: 
+  scripts:
+  queries:
